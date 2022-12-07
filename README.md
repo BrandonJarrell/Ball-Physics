@@ -9,3 +9,4 @@ This is a side project and will not be updated frequently and is merely for fun.
 - circle.h is gameObject but changed to allow me to quickly impliment collision for just balls. For this project, circle.h is all I will use. 
 
 # Graphics is done by using the [olcPixelGameEngine](https://github.com/OneLoneCoder/olcPixelGameEngine) and is not a work of my own.
+![Ball Physics](https://github.com/BrandonJarrell/Ball-Physics/blob/main/ballCollision.gif)
