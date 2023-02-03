@@ -3,8 +3,9 @@ Ball physics collision system. I'm slowly adding physics formulas to achieve a s
 
 For those that want to visualize the collision math, I made these desmos graphs.  One is fixed on the origin to help mentally grasp it, the second is the floating point calculations.
 
-![Fixed Position Collision](https://www.desmos.com/calculator/eufaxdhxzk)
-![Floating Position Collision](https://www.desmos.com/calculator/qxiidphkfm)
+[Fixed Position Collision](https://www.desmos.com/calculator/eufaxdhxzk)
+
+[Floating Position Collision](https://www.desmos.com/calculator/qxiidphkfm)
 
 This is a side project and will not be updated frequently and is merely for fun.
 
