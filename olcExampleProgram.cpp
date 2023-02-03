@@ -22,14 +22,20 @@ private:
 	// GameObject counter
 	long int gameObjectCount = 0;
 
+	olc::vf2d * spawnPos = nullptr;
+
+
 
 
 	std::list<Circle>::iterator index;
 	std::list<Circle> objectsList = 
-	{ Circle(450,50, 10), Circle(100,50, 20), Circle(100,-10, 30)
-		, Circle(100,-150, 40), Circle(-80,-150, 50),Circle(0,0, 60),
-	//Circle(350,50, 10), Circle(10,50, 20), Circle(150,-10, 8)
-	//	, Circle(100,-50, 50), Circle(-80,-10, 10),Circle(1,0, 10) 
+	{ Circle(40,30, 10), Circle(-40,30, 20), Circle(-40,-30, 20)
+		, Circle(40,-30, 20), Circle(-80,-150, 10),Circle(0,0, 10),
+	Circle(50,-20, 12), Circle(10,50, 8), Circle(150,-10, 8)
+	, Circle(100,-50, 20), Circle(-80,-10, 12),Circle(1,10, 10)
+	, Circle(100,-56, 20), Circle(-88,-10, 12),Circle(1,20, 10)
+	, Circle(110,-50, 20), Circle(-86,-10, 12),Circle(1,30, 10)
+	, Circle(100,-70, 20), Circle(-89,-10, 12),Circle(1,40, 10)
 	};
 	std::list<Circle> *objectsListP = &objectsList;
 
@@ -64,11 +70,16 @@ public:
 					Draw(screenX + x, screenY + y, object.image2d[x][y]);
 			*/
 
-			FillCircle(screenX, screenY, index->radius, olc::Pixel(255, 255, 255));
+			FillCircle(screenX, screenY, index->radius, index->color);
 		}
 		return;
 	}
 
+	// Convert Screen coordinates to world coordinates
+	olc::vi2d screenToWorldCoordinates(int x, int y)
+	{	
+		return olc::vi2d(x - screenCenterX, screenCenterY - y);
+	}
 
 	bool OnUserCreate() override
 	{
@@ -91,24 +102,10 @@ public:
 		int counter = 0;
 		for (index = objectsList.begin();counter < objectsList.size(); index++, counter++)
 		{
-			index->calcVelocity(fElapsedTime, objectsListP);
+			// Time is currently multiplied by 2 just to speed test it
+			index->calcVelocity(fElapsedTime*2, objectsListP);
 		}
-		//circle.calcVelocity(fElapsedTime, objectsListP);
-		//circle2.calcVelocity(fElapsedTime, objectsListP);
-		//circle3.calcVelocity(fElapsedTime, objectsListP);
-		//circle4.calcVelocity(fElapsedTime, objectsListP);
 
-		//std::cout << "\n#####################################\n";
-
-
-
-		if (GetKey(olc::Key::A).bHeld) cameraX -= 20.0f * fElapsedTime;
-		//Right
-		if (GetKey(olc::Key::D).bHeld) cameraX += 20.0f * fElapsedTime;
-		// Down
-		if (GetKey(olc::Key::S).bHeld) cameraY -= 20.0f * fElapsedTime;
-		//UP
-		if (GetKey(olc::Key::W).bHeld) cameraY += 20.0f * fElapsedTime;
 
 		/**************************************************************
 		* PIXEL UPDATE
@@ -123,16 +120,36 @@ public:
 		//}
 
 		drawObject();
+		if (GetMouse(olc::Mouse::LEFT).bPressed)
+		{
+			// CONVERT SCREEN SPACE TO WORLD SPACE 
+			olc::vi2d pos = screenToWorldCoordinates(GetMouseX(), GetMouseY());
+			spawnPos = new olc::vf2d(pos.x, pos.y);
+		}
 
+		if (GetMouse(olc::Mouse::LEFT).bReleased)
+		{
+
+			Circle newCircle = Circle(spawnPos->x, spawnPos->y, 10);
+
+			olc::vi2d pos = screenToWorldCoordinates(GetMouseX(), GetMouseY());
+
+			newCircle.dx = (spawnPos->x - pos.x)*1.5;
+			newCircle.dy = (spawnPos->y - pos.y)*1.5;
+
+			objectsListP->push_back(newCircle);
+			delete spawnPos;
+		}
 
 		/**************************************************************
 		* UI UPDATE
 		**************************************************************/
+		FillCircle(screenCenterX, screenCenterY, 2, olc::Pixel(0,255,0));
 
 		// Horizontal
-		DrawLine(0, screenCenterY, ScreenWidth(), screenCenterY, olc::Pixel(0, 255, 0));
+		//DrawLine(0, screenCenterY, ScreenWidth(), screenCenterY, olc::Pixel(0, 255, 0));
 		// Vertical
-		DrawLine(screenCenterX, 0, screenCenterX, ScreenHeight(), olc::Pixel(0, 255, 0));
+		//DrawLine(screenCenterX, 0, screenCenterX, ScreenHeight(), olc::Pixel(0, 255, 0));
 
 
 		return true;
@@ -143,7 +160,7 @@ public:
 int main()
 {
 	Example game;
-	if (game.Construct(500, 500, 1, 1))
+	if (game.Construct(1080, 720, 1, 1))
 		game.Start();
 
 	return 0;
