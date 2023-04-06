@@ -1,13 +1,13 @@
 # Ball-Physics
-Ball physics collision system. I'm slowly adding physics formulas to achieve a somewhat realistic collision.   My original goal was to recreate the code found in this youtube video https://www.youtube.com/watch?v=SqpIcsN0FTI&t=117s  I did this because I wanted to be able to explain how and why the "bug" is doing what its doing. I've successfully recreated it except for the collision system, it currently calculates physics in a repeatable order causing some object to push and never be pushed.
+My goal was to prove and explain why the "bug" works like it does found in this youtube video https://www.youtube.com/watch?v=SqpIcsN0FTI&t=117s  I did this because I was very intrigued by what it was doing. I've successfully recreated it except for the collision system, it currently calculates physics in a repeatable order causing some object to push and never be pushed. It's now a simple ball physics collision system which I am slowly adding physics formulas to achieve a somewhat realistic collision.   
 
-For those that want to visualize the collision math, I made these desmos graphs.  One is fixed on the origin to help mentally grasp it, the second is the floating point calculations.
+For those that want to visualize the collision math, I made these desmos graphs.  One is fixed on the origin to help mentally grasp it if needed, the second is the floating point calculations.
 
 [Fixed Position Collision](https://www.desmos.com/calculator/eufaxdhxzk)
 
 [Floating Position Collision](https://www.desmos.com/calculator/qxiidphkfm)
 
-This is a side project and will not be updated frequently and is merely for fun.
+This is a side project and will not be updated frequently and is merely for fun. The gravity physics is not accurate, everything orbits for simplicity.
 
 
 - gameObject.h is supossed to be a parent class for all objects to derive from but it will only be implimented when I start to use other shapes. Making it more than just a ball collision system and more of a engine.
